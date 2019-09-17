@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 #from flask_httpauth import HTTPBasicAuth
 #import pymongo
-from flask_cors import CORS
+#from flask_cors import CORS
 #from googlesearch import search 
 app = Flask(__name__)
 #cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
