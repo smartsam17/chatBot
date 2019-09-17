@@ -18,6 +18,9 @@ import requests
 def index():
     return "Welcome Page"
 
+@app.route("/user")
+def user():
+    return "User Page"
 
 
 
