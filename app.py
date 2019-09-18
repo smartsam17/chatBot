@@ -120,10 +120,6 @@ def reviews():
     return jsonify({'reviewList': reviewList})    
 
 
-@app.route("/")
-def index():
-    return "Welcome..."
-
 @app.route('/api/v1.0/reviews1', methods=['GET'])
 def reviews1():
     productName = request.args.get('productName')
