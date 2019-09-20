@@ -137,6 +137,9 @@ def insertReview():
     scrappingFlipKart(productName)
     return jsonify({'message': "success"})    
 
+@app.route('/api/v1.0/products', methods=['GET'])
+def allProducts():
+    return jsonify({'productList': mydb.reviews.distinct( "product" )})    
 
 if __name__ == "__main__":
     app.run(debug = True)
