@@ -46,7 +46,7 @@ def scrappingAmazon(productName):
                 'rating': rating,
                 'description': description
                 }
-            print(data)    
+            #print(data)    
             x = reviewsCol.insert_one(data)   
     return True
 
@@ -75,6 +75,7 @@ def scrappingFlipKart(productName):
             'rating': rating,
             'description': description
             }
+            #print(data)
             x = reviewsCol.insert_one(data)
     return True        
 
