@@ -9,24 +9,11 @@ auth = HTTPBasicAuth()
 import requests
 from bs4 import BeautifulSoup
 
+
+
 myclient = pymongo.MongoClient("mongodb://sachin17:Sapple123!@ds125953.mlab.com:25953/homoeopathy_in_kanpur")
 mydb = myclient["homoeopathy_in_kanpur"]
 reviewsCol = mydb["reviews"]
-
-
-@app.route("/")
-def index():
-    return "Welcome Page"
-
-
-@app.route('/api/v1.0/users', methods=['GET'])
-def users():
-    users = []
-    mycol = mydb["users"]
-    for x in mycol.find():
-        record = {"name": x["name"], "age": x["age"], "gender": x["gender"], "emailId": x["emailId"]}
-        users.append(record)
-    return jsonify({'users': users})
 
 def scrappingAmazon(productName):
     headers =  {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0'}
@@ -65,7 +52,7 @@ def scrappingAmazon(productName):
                 'rating': rating,
                 'description': description
                 }
-            #print(data)    
+            print(data)    
             x = reviewsCol.insert_one(data)    
     return True
 
@@ -120,12 +107,23 @@ def reviews():
     return jsonify({'reviewList': reviewList})    
 
 
+@app.route("/")
+def index():
+    return "Welcome..."
+
+
+@app.route('/api/v1.0/products', methods=['GET'])
+def allProducts():
+    return jsonify({'productList': mydb.reviews.distinct( "product" )})    
+
+
 @app.route('/api/v1.0/reviews1', methods=['GET'])
 def reviews1():
+    #mydb.reviews.remove({})
     productName = request.args.get('productName')
-    #scrapping(productName)
     reviewList = []
     myquery = {"product": productName.lower()}
+    #print("helooooo")
     for x in reviewsCol.find(myquery):
         record = {"source": x["source"],"product": x["product"], "title": x["title"], "rating": x["rating"], "description": x["description"]}
         reviewList.append(record)
@@ -137,9 +135,7 @@ def insertReview():
     scrappingFlipKart(productName)
     return jsonify({'message': "success"})    
 
-@app.route('/api/v1.0/products', methods=['GET'])
-def allProducts():
-    return jsonify({'productList': mydb.reviews.distinct( "product" )})    
+
 
 if __name__ == "__main__":
     app.run(debug = True)
