@@ -9,8 +9,6 @@ auth = HTTPBasicAuth()
 import requests
 from bs4 import BeautifulSoup
 
-
-
 myclient = pymongo.MongoClient("mongodb://sachin17:Sapple123!@ds125953.mlab.com:25953/homoeopathy_in_kanpur")
 mydb = myclient["homoeopathy_in_kanpur"]
 reviewsCol = mydb["reviews"]
@@ -20,7 +18,6 @@ def scrappingAmazon(productName):
     query = productName +" product review in amazon"
     for j in search(query, num=10, stop=1, pause=1): 
         baseUrl = j     
-    #print("URL===", baseUrl)    
     page = requests.get(baseUrl)
     soup = BeautifulSoup(page.text, 'html.parser')
     pageLength = soup.find(class_="a-section a-spacing-medium").find(class_="a-size-base").contents[0].split('of')
@@ -30,11 +27,8 @@ def scrappingAmazon(productName):
     denominator = totalrecords % int(recordsPerpage)
     if denominator >0:
         nummerous += 1
-
-
     totalPages = int(nummerous)    
     productTitle = soup.find(class_="product-title").find(class_="a-link-normal").contents[0]
-    #print(totalPages)
     for i in range(1,totalPages):
         url = baseUrl+'?pageNumber='+str(i)
         page = requests.get(url, headers=headers)
@@ -53,7 +47,7 @@ def scrappingAmazon(productName):
                 'description': description
                 }
             print(data)    
-            x = reviewsCol.insert_one(data)    
+            x = reviewsCol.insert_one(data)   
     return True
 
 def scrappingFlipKart(productName):
@@ -62,11 +56,9 @@ def scrappingFlipKart(productName):
     for j in search(query, num=10, stop=1, pause=1): 
         baseUrl = j     
     print("URL===", baseUrl)    
-    #baseUrl = 'https://www.flipkart.com/samsung-galaxy-s10-prism-white-128-gb/product-reviews/itmfdyp64j3hsfzy?pid=MOBFDNHABB3V23FY'
     page = requests.get(baseUrl)
     soup = BeautifulSoup(page.text, 'html.parser')
     pageLength = soup.find(class_="_2zg3yZ _3KSYCY").find(class_="").contents[0].split("of ")
-    #print("PageLength============", pageLength)
     for i in range(1,int(pageLength[1].replace(',', ''))):
         url = baseUrl+"&page="+str(i)
         page = requests.get(url, headers)
@@ -74,7 +66,6 @@ def scrappingFlipKart(productName):
         reviewItems = soup.find_all(class_='col _390CkK _1gY8H-')
         for reviewItem in reviewItems:
             rating = reviewItem.find(class_="row").find_all('div')[0].contents[0]
-            #rating1 = reviewItem.find(class_='hGSR34 E_uFuv').contents[0]   #hGSR34 _1nLEql E_uFuv
             title = reviewItem.find(class_='_2xg6Ul').contents[0]
             description = reviewItem.find(class_='qwjRop').find(class_="").find(class_="").contents[0]
             data = {
@@ -84,12 +75,7 @@ def scrappingFlipKart(productName):
             'rating': rating,
             'description': description
             }
-            print(data)
             x = reviewsCol.insert_one(data)
-            print(rating)
-            print(title)
-            print(description)
-            print("====================================")
     return True        
 
 @app.route('/api/v1.0/reviews', methods=['GET'])
@@ -105,6 +91,13 @@ def reviews():
         record = {"source": x["source"],"product": x["product"], "title": x["title"], "rating": x["rating"], "description": x["description"]}
         reviewList.append(record)
     return jsonify({'reviewList': reviewList})    
+
+@app.route('/api/v1.0/reviews', methods=['DELETE'])
+def delete_review():
+    productName = request.args.get('productName')
+    deleteQuery = { "product": productName }
+    x = reviewsCol.delete_many(deleteQuery)
+    return jsonify({'mesage': 'Reviews deleted successfully.'})    
 
 
 @app.route("/")
@@ -123,7 +116,6 @@ def reviews1():
     productName = request.args.get('productName')
     reviewList = []
     myquery = {"product": productName.lower()}
-    #print("helooooo")
     for x in reviewsCol.find(myquery):
         record = {"source": x["source"],"product": x["product"], "title": x["title"], "rating": x["rating"], "description": x["description"]}
         reviewList.append(record)
