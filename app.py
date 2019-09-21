@@ -17,7 +17,7 @@ reviewsCol = mydb["reviews"]
 
 def scrappingAmazon(productName):
     headers =  {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0'}
-    query = productName +" product reviews in amazon"
+    query = productName +" product review in amazon"
     for j in search(query, num=10, stop=1, pause=1): 
         baseUrl = j     
     #print("URL===", baseUrl)    
