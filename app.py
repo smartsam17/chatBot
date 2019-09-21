@@ -29,6 +29,7 @@ def scrappingAmazon(productName):
         nummerous += 1
     totalPages = int(nummerous)    
     productTitle = soup.find(class_="product-title").find(class_="a-link-normal").contents[0]
+    data=[]
     for i in range(1,totalPages):
         url = baseUrl+'?pageNumber='+str(i)
         page = requests.get(url, headers=headers)
@@ -39,15 +40,15 @@ def scrappingAmazon(productName):
             description = reviewItem.find(class_='review-text-content').find(class_="").contents[0]
             ratingTitle = reviewItem.find(class_='review-rating').find(class_="a-icon-alt").contents[0]
             rating = int(ratingTitle.split('of')[1].replace('stars',''))
-            data = {
+            data.append({
                 'source': 'Amazon',
                 'product': productName.lower(),     
                 'title': title,
                 'rating': rating,
                 'description': description
-                }
+                })
             #print(data)    
-            x = reviewsCol.insert_one(data)   
+    x = reviewsCol.insert_many(data)   
     return True
 
 def scrappingFlipKart(productName):
@@ -59,6 +60,7 @@ def scrappingFlipKart(productName):
     page = requests.get(baseUrl)
     soup = BeautifulSoup(page.text, 'html.parser')
     pageLength = soup.find(class_="_2zg3yZ _3KSYCY").find(class_="").contents[0].split("of ")
+    data=[]
     for i in range(1,int(pageLength[1].replace(',', ''))):
         url = baseUrl+"&page="+str(i)
         page = requests.get(url, headers)
@@ -68,15 +70,15 @@ def scrappingFlipKart(productName):
             rating = reviewItem.find(class_="row").find_all('div')[0].contents[0]
             title = reviewItem.find(class_='_2xg6Ul').contents[0]
             description = reviewItem.find(class_='qwjRop').find(class_="").find(class_="").contents[0]
-            data = {
+            data.append({
             'source': 'Flipkart',    
             'product': productName.lower(),     
             'title': title,
             'rating': rating,
             'description': description
-            }
+            })
             #print(data)
-            x = reviewsCol.insert_one(data)
+    x = reviewsCol.insert_many(data)
     return True        
 
 @app.route('/api/v1.0/reviews', methods=['GET'])
