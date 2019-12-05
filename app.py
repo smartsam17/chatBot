@@ -141,7 +141,8 @@ def users():
             "speech" : "hello",
             "displayText": "hello",
             "source" : "demo"
-        }    
+        }   
+    r.headers['Content-Type'] = 'application/json'
     return jsonify(r)
 
 
