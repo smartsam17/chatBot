@@ -130,21 +130,19 @@ def insertReview():
     scrappingFlipKart(productName)
     return jsonify({'message': "success"})    
 
-@app.route('/api/v1.0/users', methods=['POST'])
-def users():
-    users = []
-    mycol = mydb["users"]
-    for x in mycol.find():
-        record = {"name": x["name"], "age": x["age"], "gender": x["gender"], "emailId": x["emailId"]}
-        users.append(record)
+@app.route('/api/v1.0/weather', methods=['POST'])
+def weather():
+    weatherurl = 'https://api.openweathermap.org/data/2.5/weather?q=delhi&appid=a716f2f5ebcee25f134cb1032217904f'
+    weatherInfo = requests.get(weatherurl)   
+    weatherData = weatherInfo.json()
+     
     r = {
-            "speech" : "hello1111",
-            "displayText": "ssssssssssssssss",
-            "source" : "demossssss",
-            "fulfillmentText": "aaaaarrrpp"
-        }   
+            "speech" : "hello",
+            "fulfillmentText": "Weather of delhi is "+weatherData['weather'][0]['description'],
+            "source" : "demo"
+        }    
+    
     return jsonify(r)
-
 
 if __name__ == "__main__":
     app.run(debug = True)
