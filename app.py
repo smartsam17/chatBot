@@ -130,7 +130,7 @@ def insertReview():
     scrappingFlipKart(productName)
     return jsonify({'message': "success"})    
 
-@app.route('/api/v1.0/users', methods=['GET'])
+@app.route('/api/v1.0/users', methods=['POST'])
 def users():
     users = []
     mycol = mydb["users"]
