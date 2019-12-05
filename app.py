@@ -142,7 +142,7 @@ def users():
             "displayText": "hello",
             "source" : "demo"
         }    
-    return r
+    return jsonify(r)
 
 
 if __name__ == "__main__":
