@@ -130,6 +130,14 @@ def insertReview():
     scrappingFlipKart(productName)
     return jsonify({'message': "success"})    
 
+@app.route('/api/v1.0/users', methods=['GET'])
+def users():
+    users = []
+    mycol = mydb["users"]
+    for x in mycol.find():
+        record = {"name": x["name"], "age": x["age"], "gender": x["gender"], "emailId": x["emailId"]}
+        users.append(record)
+    return jsonify({'users': users})
 
 
 if __name__ == "__main__":
