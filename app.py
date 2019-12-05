@@ -140,7 +140,8 @@ def users():
     r = {
             "speech" : "hello1111",
             "displayText": "ssssssssssssssss",
-            "source" : "demossssss"
+            "source" : "demossssss",
+            "fulfillmentText": "aaaaarrrpp"
         }   
     return jsonify(r)
 
