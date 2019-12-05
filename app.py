@@ -142,8 +142,7 @@ def users():
             "displayText": "hello",
             "source" : "demo"
         }   
-    r.headers['Content-Type'] = 'application/json'
-    return r
+    return jsonify(r)
 
 
 if __name__ == "__main__":
