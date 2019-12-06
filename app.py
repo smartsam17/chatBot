@@ -132,17 +132,21 @@ def insertReview():
 
 @app.route('/api/v1.0/weather', methods=['POST'])
 def weather():
+    bodyParams = request.get_json()
+    action = bodyParams['queryResult']['action']
+    print('ssssssssssss  ', bodyParams)
     weatherurl = 'https://api.openweathermap.org/data/2.5/weather?q=delhi&appid=a716f2f5ebcee25f134cb1032217904f'
     weatherInfo = requests.get(weatherurl)   
     weatherData = weatherInfo.json()
-     
+    #print("==========", weatherData['weather'][0]['description']) 
     r = {
             "speech" : "hello",
             "fulfillmentText": "Weather of delhi is "+weatherData['weather'][0]['description'],
-            "source" : "demo"
+            "source" : "action=="+action
         }    
     
     return jsonify(r)
+
 
 if __name__ == "__main__":
     app.run(debug = True)
