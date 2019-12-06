@@ -135,6 +135,7 @@ def weather():
     #req = json.loads(request.body)
     #get action from json 
     #action = req.get('queryResult').get('action') 
+    message = ''
     bodyParams = request.get_json()
     action = bodyParams['queryResult']['action']
     print('ssssssssssss  ', bodyParams)
