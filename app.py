@@ -149,7 +149,7 @@ def weather():
     r = {
             "speech" : "hello",
             "fulfillmentText": "Weather of "+city+" is "+message,
-            "source" : "wwatherAPI"
+            "source" : "wwatherAPI=="+weatherInfo.json()['weather'][0]['description']
         }    
     
     return jsonify(r)
