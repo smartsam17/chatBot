@@ -141,7 +141,7 @@ def weather():
     city = bodyParams['queryResult']['parameters']['geo-city']
     #print('ssssssssssss  ', bodyParams)
     if action == 'get_weather':
-        weatherurl = 'https://api.openweathermap.org/data/2.5/weather?q=delhi&appid=a716f2f5ebcee25f134cb1032217904f'
+        weatherurl = 'https://api.openweathermap.org/data/2.5/weather?q='+city+'&appid=a716f2f5ebcee25f134cb1032217904f'
         weatherInfo = requests.get(weatherurl)   
         message = weatherInfo.json()['weather'][0]['description']
 
