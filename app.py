@@ -138,7 +138,8 @@ def weather():
     message = ''
     bodyParams = request.get_json()
     action = bodyParams['queryResult']['action']
-    print('ssssssssssss  ', bodyParams)
+    city = bodyParams['queryResult']['parameters']['geo-city']
+    #print('ssssssssssss  ', bodyParams)
     if action == 'get_weather':
         weatherurl = 'https://api.openweathermap.org/data/2.5/weather?q=delhi&appid=a716f2f5ebcee25f134cb1032217904f'
         weatherInfo = requests.get(weatherurl)   
@@ -147,11 +148,12 @@ def weather():
     #print("==========", weatherData['weather'][0]['description']) 
     r = {
             "speech" : "hello",
-            "fulfillmentText": "Weather of delhi is "+message,
-            "source" : "action=="+action
+            "fulfillmentText": "Weather of "+city+" is "+message,
+            "source" : "wwatherAPI"
         }    
     
     return jsonify(r)
+
 
 
 if __name__ == "__main__":
