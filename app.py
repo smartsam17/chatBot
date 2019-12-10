@@ -154,6 +154,83 @@ def weather():
     
     return jsonify(r)
 
+def sendEmail(student):
+    # Send the Email to Student
+    import smtplib 
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = "Registration Completed."
+    msg['From'] = 'samarssk@gmail.com'
+    msg['To'] = 'samarssk@gmail.com'
+
+    # Create the body of the message (a plain-text and an HTML version).
+    #text = "Hi!\nHow are you?\nHere is the link you wanted:\nhttp://www.python.org"
+    html = """\
+    <html>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Demystifying Email Design</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <body bgcolor="#33bbff">
+        <div style="background-color:#33bbff;height:400px;color:#00008b;padding:30px;font-size:14px;">
+            <div><img width="200px" height="80px" src="https://cdn.shortpixel.ai/client/q_lossy,ret_img,w_729/https://ineuron.ai/wp-content/uploads/2019/09/Ineuron-Logo-white.png"></div>
+            <div>
+                <p>Dear {name},<br>
+                Your registration has been completed.<br>
+                Please visit our website <a href="https://ineuron.ai/">ineuron.ai</a> for more information.
+                </p>
+            </div>
+            <div>
+                Thank You!
+            </div>
+        </div>
+    </body>
+    </html>
+    """.format(name=student["name"])
+    
+    # Record the MIME types of both parts - text/plain and text/html.
+    #part1 = MIMEText(text, 'plain')
+    part2 = MIMEText(html, 'html')
+
+    # Attach parts into message container.
+    # According to RFC 2046, the last part of a multipart message, in this case
+    # the HTML message, is best and preferred.
+    #msg.attach(part1)
+    msg.attach(part2)
+    s = smtplib.SMTP('smtp.gmail.com', 587) 
+    s.starttls() 
+    s.login("samarssk@gmail.com", "") 
+    s.sendmail("samarssk@gmail.com", student['emailId'] , msg.as_string()) 
+    s.quit()  
+
+@app.route('/api/v1.0/signUp', methods=['POST'])
+def signUp():
+    message = ''
+    bodyParams = request.get_json()
+    action = bodyParams['queryResult']['action']
+    if action == 'student_signup':
+        student = {
+        'name':  bodyParams['queryResult']['parameters']['name'],
+        'emailId': bodyParams['queryResult']['parameters']['emailId'],
+        'mobileNo': bodyParams['queryResult']['parameters']['mobileNo'],
+        'qualification': bodyParams['queryResult']['parameters']['qualification'],
+        'courseName': bodyParams['queryResult']['parameters']['courseName']
+        }
+        mycol = mydb["students"]
+        x = mycol.insert_one(student)
+        insereted_id = x.inserted_id
+        message = 'Thank You. You registration has been completed.'
+        #sendEmail(student)
+        r = {
+            "speech" : "Student SignUp",
+            "fulfillmentText": message,
+            "source" : "Academic"
+        }    
+    
+    return jsonify(r)
+
+
 
 
 if __name__ == "__main__":
