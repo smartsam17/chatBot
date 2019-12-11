@@ -212,7 +212,7 @@ def signUp():
     if action == 'student_signup':
         student = {
         'name':  bodyParams['queryResult']['parameters']['name'],
-        'emailId': bodyParams['queryResult']['parameters']['emailId'],
+        'emailId': bodyParams['queryResult']['parameters']['email'],
         'mobileNo': bodyParams['queryResult']['parameters']['mobileNo'],
         'qualification': bodyParams['queryResult']['parameters']['qualification'],
         'courseName': bodyParams['queryResult']['parameters']['courseName']
