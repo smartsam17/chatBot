@@ -200,7 +200,7 @@ def sendEmail(student):
     msg.attach(part2)
     s = smtplib.SMTP('smtp.gmail.com', 587) 
     s.starttls() 
-    s.login("samarssk@gmail.com", "") 
+    s.login("skg17nov@gmail.com", "Sapple123") 
     s.sendmail("samarssk@gmail.com", student['emailId'] , msg.as_string()) 
     s.quit()  
 
@@ -221,7 +221,7 @@ def signUp():
         x = mycol.insert_one(student)
         insereted_id = x.inserted_id
         message = 'Thank You. We will send all the course details in your Email.'
-        #sendEmail(student)
+        sendEmail(student)
         r = {
             "speech" : "Student SignUp",
             "fulfillmentText": message,
