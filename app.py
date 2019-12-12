@@ -220,7 +220,7 @@ def signUp():
         mycol = mydb["students"]
         x = mycol.insert_one(student)
         insereted_id = x.inserted_id
-        message = 'Thank You. You registration has been completed.'
+        message = 'Thank You. We will send all the course details in your Email.'
         #sendEmail(student)
         r = {
             "speech" : "Student SignUp",
