@@ -156,25 +156,29 @@ def weather():
 
 def sendEmail(student):
     # Send the Email to Student
-    import smtplib 
+    import smtplib, ssl
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
-    msg = MIMEMultipart('alternative')
+    from email.message import EmailMessage
+
+    context = ssl.create_default_context()
+    msg = EmailMessage()
+    #msg = MIMEMultipart('alternative')
     msg['Subject'] = "Registration Completed."
-    msg['From'] = 'samarssk@gmail.com'
-    msg['To'] = 'samarssk@gmail.com'
+    msg['From'] = 'skg17nov@gmail.com'
+    msg['To'] = student['emailId']
 
     # Create the body of the message (a plain-text and an HTML version).
     #text = "Hi!\nHow are you?\nHere is the link you wanted:\nhttp://www.python.org"
-    html = """\
-    <html>
+    html1 = """<html>
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Demystifying Email Design</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
     <body bgcolor="#33bbff">
         <div style="background-color:#33bbff;height:400px;color:#00008b;padding:30px;font-size:14px;">
-            <div><img width="200px" height="80px" src="https://cdn.shortpixel.ai/client/q_lossy,ret_img,w_729/https://ineuron.ai/wp-content/uploads/2019/09/Ineuron-Logo-white.png"></div>
+            <div><img width="200px" height="80px" src="https://ineuron.ai/wp-content/uploads/2019/09/Ineuron-Logo-white.png"></div>
             <div>
                 <p>Dear {name},<br>
                 Your registration has been completed.<br>
@@ -186,24 +190,25 @@ def sendEmail(student):
             </div>
         </div>
     </body>
-    </html>
-    """.format(name=student["name"])
-    
+    </html>""".format(name=student["name"])
+    msg.set_content(html1, subtype='html')
     # Record the MIME types of both parts - text/plain and text/html.
     #part1 = MIMEText(text, 'plain')
-    part2 = MIMEText(html, 'html')
-
+    #part2 = MIMEText(html, 'html')
+    #msg.set_payload(html)
     # Attach parts into message container.
     # According to RFC 2046, the last part of a multipart message, in this case
     # the HTML message, is best and preferred.
     #msg.attach(part1)
-    msg.attach(part2)
+    #msg.attach(part2)
+    #msg.add_header('Content-Type','text/html')
     s = smtplib.SMTP('smtp.gmail.com', 587) 
-    s.starttls() 
+    s.starttls(context=context) 
     s.login("skg17nov@gmail.com", "Sapple123") 
-    s.sendmail("samarssk@gmail.com", student['emailId'] , msg.as_string()) 
-    s.quit()  
-
+    #s.login("samarssk@gmail.com", "chummi@123")
+    s.sendmail(msg['From'], msg['To'] , msg.as_string()) 
+    s.quit()
+    
 @app.route('/api/v1.0/signUp', methods=['POST'])
 def signUp():
     message = ''
