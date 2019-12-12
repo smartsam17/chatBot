@@ -205,7 +205,6 @@ def sendEmail(student):
     s = smtplib.SMTP('smtp.gmail.com', 587) 
     s.starttls(context=context) 
     s.login("skg17nov@gmail.com", "Sapple123") 
-    #s.login("samarssk@gmail.com", "chummi@123")
     s.sendmail(msg['From'], msg['To'] , msg.as_string()) 
     s.quit()
     
