@@ -208,6 +208,19 @@ def sendEmail(student):
     s.sendmail(msg['From'], msg['To'] , msg.as_string()) 
     s.quit()
     
+def sendSMS(student):
+    message= "Thanks "+student['name']+" for your enquiry. We will get back to you soon."
+    phoneNumber = student['mobileNo']
+    url = "https://www.fast2sms.com/dev/bulk"
+    payload = "sender_id=FSTSMS&message="+message+"&language=english&route=p&numbers="+phoneNumber
+    headers = {
+                'authorization': "WKSZYFTUpljeX3JCVMiBbdA96fnquLI7sNk5yPa0EgGt2c1rRzJ9n1cVZWR2rHQi0mLdjuBa5sYfktob",
+                'Content-Type': "application/x-www-form-urlencoded",
+                'Cache-Control': "no-cache"}
+    response = requests.request("POST", url, data=payload, headers=headers)
+    return {'message': response.text}
+    
+    
 @app.route('/api/v1.0/signUp', methods=['POST'])
 def signUp():
     message = ''
@@ -226,6 +239,7 @@ def signUp():
         insereted_id = x.inserted_id
         message = 'Thank You. We will send all the course details in your Email.'
         sendEmail(student)
+        sendSMS(student)
         r = {
             "speech" : "Student SignUp",
             "fulfillmentText": message,
