@@ -248,7 +248,26 @@ def signUp():
     
     return jsonify(r)
 
-
+@app.route('/api/v1.0/entitlement', methods=['POST'])
+def entitlement():
+    r = {
+            "response": [
+                {
+                    "input": {
+                        "key": "",
+                        "reportNumber": "",
+                        "subdivisionID": "",
+                        "claimBranchID": "",
+                        "coverageCode": "",
+                        "organisationNumber": "104842",
+                        "capabilityId": "claimsCenter.inquiry.disability"
+                    },
+                    "allowAccess": "Yes",
+                    "reason": "Capability is found on user entitlements; nothing more to do"
+                }
+            ]
+        }
+    return jsonify(r)
 
 
 if __name__ == "__main__":
