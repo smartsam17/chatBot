@@ -282,7 +282,7 @@ def contactUs():
     mycol = mydb["contactUs"]
     x = mycol.insert_one(user)
     insereted_id = x.inserted_id
-    return jsonify({'message': "Thank u.", 'status': True})
+    return jsonify({'message': "Thank u."})
 
 @app.route('/api/v1.0/contactUs', methods=['GET'])
 def contactUs_get():
@@ -291,7 +291,7 @@ def contactUs_get():
     for x in mycol.find():
         record = {"firstName": x["firstName"], "lastName": x["lastName"], "emailId": x["emailId"], "mobileNo": x["mobileNo"], "message": x["message"]}
         records.append(record)
-    return jsonify({'data': records, 'status': True})
+    return jsonify({'data': records})
 
 
 if __name__ == "__main__":
