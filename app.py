@@ -269,6 +269,22 @@ def entitlement():
         }
     return jsonify(r)
 
+@app.route('/api/v1.0/contactUs', methods=['POST'])
+def contactUs():
+    data = request.get_json(force=True)
+    user = {
+        'firstName': data['firstName'],
+        'lastName': data['lastName'],
+        'emailId': data['emailId'],
+        'mobileNo': data['mobileNo'],
+        'message': data['message']
+    }
+    mycol = mydb["contactUs"]
+    x = mycol.insert_one(user)
+    insereted_id = x.inserted_id
+    return jsonify({'message': "Thank u."})
+
+
 
 if __name__ == "__main__":
     app.run(debug = True)
