@@ -277,7 +277,8 @@ def contactUs():
         'lastName': data['lastName'],
         'emailId': data['emailId'],
         'mobileNo': data['mobileNo'],
-        'message': data['message']
+        'comments': data['comments'],
+        'address': data['address']
     }
     mycol = mydb["contactUs"]
     x = mycol.insert_one(user)
@@ -289,7 +290,7 @@ def contactUs_get():
     records = []
     mycol = mydb["contactUs"]
     for x in mycol.find():
-        record = {"firstName": x["firstName"], "lastName": x["lastName"], "emailId": x["emailId"], "mobileNo": x["mobileNo"], "message": x["message"]}
+        record = {"firstName": x["firstName"], "lastName": x["lastName"], "emailId": x["emailId"], "mobileNo": x["mobileNo"], "comments": x["comments"], "address": x["address"]}
         records.append(record)
     return jsonify({'data': records, 'status': True})
 
