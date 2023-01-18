@@ -9,7 +9,7 @@ auth = HTTPBasicAuth()
 import requests
 from bs4 import BeautifulSoup
 
-myclient = pymongo.MongoClient("mongodb://sachin17:Sapple123!@ds125953.mlab.com:25953/homoeopathy_in_kanpur")
+myclient = pymongo.MongoClient("pymongo.MongoClient("mongodb+srv://smartsachin:hindustan@cluster0.u4b34bn.mongodb.net/?retryWrites=true&w=majority")")
 mydb = myclient["homoeopathy_in_kanpur"]
 reviewsCol = mydb["reviews"]
 
